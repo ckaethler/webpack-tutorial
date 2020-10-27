@@ -51,6 +51,18 @@ module.exports = {
                 use: [
                     'handlebars-loader'
                 ]
+            },
+            {
+                test: /\.(woff|woff2|ttf)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'fonts/'
+                        }
+                    }
+                ]
             }
         ]
     },

@@ -8,14 +8,14 @@ module.exports = {
     output: {
         filename: 'bundle.[contenthash].js',
         path: path.resolve(__dirname, './dist'),
-        publicPath: '/static/'
+        publicPath: '/static/',
     },
     mode: 'production',
     optimization: {
         splitChunks: {
             chunks: 'all',
             minSize: 10000,
-            automaticNameDelimiter: '_'
+            automaticNameDelimiter: '_',
         }
     },
     module: {
@@ -35,7 +35,20 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'
+                    MiniCssExtractPlugin.loader, 
+                    'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: function () {
+                                return [
+                                    require('precss'),
+                                    require('autoprefixer'),
+                                ];
+                            }
+                        }
+                    },
+                    'sass-loader',
                 ]
             },
             {
@@ -54,7 +67,19 @@ module.exports = {
                 use: [
                     'handlebars-loader'
                 ]
-            }
+            },
+            {
+                test: /\.(woff|woff2|ttf)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'fonts/'
+                        }
+                    }
+                ]
+            },
         ]
     },
     plugins: [
